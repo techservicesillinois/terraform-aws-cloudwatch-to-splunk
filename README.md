@@ -1,7 +1,9 @@
 # terraform-aws-cloudwatch-to-splunk
 
 Provides a lambda function that forwards logs from cloudwatch to
-splunk. This function is configured using SSM.
+splunk. This function is configured using [AWS Systems Manager
+Parameter
+Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html)(SSM).
 
 TODO: Add more details.
 
