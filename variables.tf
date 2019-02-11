@@ -1,11 +1,7 @@
-##### Variables for aws_lambda_function resource.
-
-# TODO: Function name is temporarily set via a variable in order to allow
-#       multiple lambda functions to coexist until such time as we read
-#       the Splunk HEC tokens from AWS Parameter Store, when we can 
-#       coalesce into a single function shared among many applications.
+# Normally, callers will use the default for ${var.function_name}, but
+# overriding may be useful for testing.
 variable "function_name" {
-  description = "Name of the lambda function to be deployed (TEMPORARY)"
+  description = "Name of the lambda function to be deployed"
   default     = "cloudwatch_to_splunk"
 }
 

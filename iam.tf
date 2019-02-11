@@ -1,7 +1,8 @@
-# Splunk blue prints
-# https://www.splunk.com/blog/2017/02/03/how-to-easily-stream-aws-cloudwatch-logs-to-splunk.html
-# IAM Manual for CloudWatch
-# https://docs.aws.amazon.com/IAM/latest/UserGuide/list_amazoncloudwatchlogs.html#amazoncloudwatchlogs-policy-keys
+# Splunk blue prints:
+#   https://www.splunk.com/blog/2017/02/03/how-to-easily-stream-aws-cloudwatch-logs-to-splunk.html
+#
+# IAM Manual for CloudWatch:
+#   https://docs.aws.amazon.com/IAM/latest/UserGuide/list_amazoncloudwatchlogs.html#amazoncloudwatchlogs-policy-keys
 
 locals {
   # Remove leading slashes
@@ -49,7 +50,7 @@ data "aws_iam_policy_document" "assume-role-policy" {
     }
   }
 
-  # TODO: This was added for testing. Do we want to keep it long term?
+  # This statement is not required for production, but it's useful for debugging.
   statement {
     actions = ["sts:AssumeRole"]
 
@@ -61,24 +62,14 @@ data "aws_iam_policy_document" "assume-role-policy" {
 }
 
 resource "aws_iam_policy" "default" {
-  # TODO: Function name is temporarily set via a variable in order to allow
-  #       multiple lambda functions to coexist until such time as we read
-  #       the Splunk HEC tokens from AWS Parameter Store, when we can 
-  #       coalesce into a single function shared among many applications.
-  name = "${var.function_name}"
-
+  name        = "${var.function_name}"
   path        = "/"
   description = "Policy controlling access granted to lambda function ${var.function_name}"
   policy      = "${data.aws_iam_policy_document.default.json}"
 }
 
 resource "aws_iam_role" "default" {
-  # TODO: Function name is temporarily set via a variable in order to allow
-  #       multiple lambda functions to coexist until such time as we read
-  #       the Splunk HEC tokens from AWS Parameter Store, when we can 
-  #       coalesce into a single function shared among many applications.
-  name = "${var.function_name}"
-
+  name               = "${var.function_name}"
   path               = "/"
   description        = "Role assumed by lambda function ${var.function_name}"
   assume_role_policy = "${data.aws_iam_policy_document.assume-role-policy.json}"
