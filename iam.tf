@@ -49,6 +49,7 @@ data "aws_iam_policy_document" "assume-role-policy" {
     }
   }
 
+  # TODO: This was added for testing. Do we want to keep it long term?
   statement {
     actions = ["sts:AssumeRole"]
 
