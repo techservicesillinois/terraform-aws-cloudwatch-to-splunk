@@ -8,16 +8,21 @@ resource "aws_cloudwatch_log_group" "default" {
 }
 
 resource "aws_lambda_function" "default" {
-  description   = "Stream events from AWS CloudWatch to Splunk event collector"
+  description = "Stream events from AWS CloudWatch to Splunk event collector"
+
+  # The function_name, runtime, memory_size, and timeout use variables
+  # to facilitate testing of both new runtimes and new function versions.
+  # End users will ordinarily use the default values.
   function_name = "${var.function_name}"
-  handler       = "index.handler"
-  publish       = "true"
-  role          = "${aws_iam_role.default.arn}"
-  runtime       = "nodejs6.10"
-  memory_size   = "512"
-  timeout       = "10"
-  s3_bucket     = "drone-${local.region}-${local.account_id}"
-  s3_key        = "splunk-aws-serverless-apps/splunk-cloudwatch-logs-processor.zip"
+
+  runtime     = "${var.runtime}"
+  memory_size = "${var.memory_size}"
+  timeout     = "${var.timeout}"
+  handler     = "index.handler"
+  publish     = "true"
+  role        = "${aws_iam_role.default.arn}"
+  s3_bucket   = "drone-${local.region}-${local.account_id}"
+  s3_key      = "splunk-aws-serverless-apps/splunk-cloudwatch-logs-processor.zip"
 
   environment {
     variables = {

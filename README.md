@@ -14,7 +14,7 @@ module "foo" {
   source = "git@github.com:techservicesillinois/terraform-aws-cloudwatch-to-splunk//"
   # NOTE: Normally, callers will NOT specify the function name, except when
   # deploying a test version of the lambda code.
-  # function_name = cloudwatch_to_splunk  
+  # function_name = cloudwatch-to-splunk
 }
 ```
 
@@ -24,7 +24,15 @@ Argument Reference
 The following arguments are supported:
 
 * `function_name` - Name of the lambda function and role to be deployed
-(default: *cloudwatch_to_splunk*)
+(default: *cloudwatch-to-splunk*). **NOTE:** In general, this should not
+be overridden by end users.
+
+* `memory_size` - Amount of memory in MB for lambda function
+(default: "512").  **NOTE:** In general, this should not be overridden by
+end users.
+
+* `runtime` - Lambda function's runtime environment (default: nodejs8.10).
+**NOTE:** In general, this should not be overridden by end users.
 
 * `splunk_cache_ttl` - Time-to-live value for cached Splunk connection
 in milliseconds (default: *6000*)
