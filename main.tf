@@ -1,6 +1,6 @@
 locals {
-  account_id = "${data.aws_caller_identity.current.account_id}"
-  region     = "${data.aws_region.current.name}"
+  account_id = data.aws_caller_identity.current.account_id
+  region     = data.aws_region.current.name
 }
 
 resource "aws_cloudwatch_log_group" "default" {
@@ -13,21 +13,21 @@ resource "aws_lambda_function" "default" {
   # The function_name, runtime, memory_size, and timeout use variables
   # to facilitate testing of both new runtimes and new function versions.
   # End users will ordinarily use the default values.
-  function_name = "${var.function_name}"
+  function_name = var.function_name
 
-  runtime     = "${var.runtime}"
-  memory_size = "${var.memory_size}"
-  timeout     = "${var.timeout}"
+  runtime     = var.runtime
+  memory_size = var.memory_size
+  timeout     = var.timeout
   handler     = "index.handler"
-  publish     = "true"
-  role        = "${aws_iam_role.default.arn}"
+  publish     = true
+  role        = aws_iam_role.default.arn
   s3_bucket   = "drone-${local.region}-${local.account_id}"
   s3_key      = "splunk-aws-serverless-apps/splunk-cloudwatch-logs-processor.zip"
 
   environment {
     variables = {
-      SPLUNK_CACHE_TTL = "${var.splunk_cache_ttl}"
-      SSM_PREFIX       = "${var.ssm_prefix}"
+      SPLUNK_CACHE_TTL = var.splunk_cache_ttl
+      SSM_PREFIX       = var.ssm_prefix
     }
   }
 }

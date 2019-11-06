@@ -1,4 +1,6 @@
-# terraform-aws-cloudwatch-to-splunk
+# cloudwatch-to-splunk
+
+[![Build Status](https://drone.techservices.illinois.edu/api/badges/techservicesillinois/terraform-aws-cloudwatch-to-splunk/status.svg)](https://drone.techservices.illinois.edu/techservicesillinois/terraform-aws-cloudwatch-to-splunk)
 
 Provides a lambda function that can be used with an arbitrary number of CloudWatch log groups to forward logs to [Splunk](https://www.splunk.com/). Each log group requires
 a log filter and configuration using [AWS Systems Manager
@@ -28,7 +30,7 @@ The following arguments are supported:
 be overridden by end users.
 
 * `memory_size` - Amount of memory in MB for lambda function
-(default: "512").  **NOTE:** In general, this should not be overridden by
+(default: 512).  **NOTE:** In general, this should not be overridden by
 end users.
 
 * `runtime` - Lambda function's runtime environment (default: nodejs8.10).

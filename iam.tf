@@ -6,7 +6,7 @@
 
 locals {
   # Remove leading slashes
-  ssm_prefix = "${join("/", compact(split("/", var.ssm_prefix)))}"
+  ssm_prefix = join("/", compact(split("/", var.ssm_prefix)))
 }
 
 data "aws_iam_policy_document" "default" {
@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "default" {
       "logs:DescribeLogStreams",
     ]
 
-    resources = ["${aws_cloudwatch_log_group.default.arn}"]
+    resources = [aws_cloudwatch_log_group.default.arn]
   }
 
   statement {
@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "default" {
     ]
 
     resources = [
-      "${aws_cloudwatch_log_group.default.arn}",
+      aws_cloudwatch_log_group.default.arn,
       "${aws_cloudwatch_log_group.default.arn}:*:*",
     ]
   }
@@ -36,7 +36,12 @@ data "aws_iam_policy_document" "default" {
       "ssm:GetParameters",
     ]
 
-    resources = ["${format("arn:aws:ssm:%s:%s:parameter/%s/*", data.aws_region.current.name, data.aws_caller_identity.current.account_id, local.ssm_prefix)}"]
+    resources = [format(
+      "arn:aws:ssm:%s:%s:parameter/%s/*",
+      data.aws_region.current.name,
+      data.aws_caller_identity.current.account_id,
+      local.ssm_prefix,
+    )]
   }
 }
 
@@ -55,27 +60,30 @@ data "aws_iam_policy_document" "assume-role-policy" {
     actions = ["sts:AssumeRole"]
 
     principals {
-      type        = "AWS"
-      identifiers = ["${format("arn:aws:iam::%s:root", data.aws_caller_identity.current.account_id)}"]
+      type = "AWS"
+      identifiers = [format(
+        "arn:aws:iam::%s:root",
+        data.aws_caller_identity.current.account_id,
+      )]
     }
   }
 }
 
 resource "aws_iam_policy" "default" {
-  name        = "${var.function_name}"
+  name        = var.function_name
   path        = "/"
   description = "Policy controlling access granted to lambda function ${var.function_name}"
-  policy      = "${data.aws_iam_policy_document.default.json}"
+  policy      = data.aws_iam_policy_document.default.json
 }
 
 resource "aws_iam_role" "default" {
-  name               = "${var.function_name}"
+  name               = var.function_name
   path               = "/"
   description        = "Role assumed by lambda function ${var.function_name}"
-  assume_role_policy = "${data.aws_iam_policy_document.assume-role-policy.json}"
+  assume_role_policy = data.aws_iam_policy_document.assume-role-policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "default" {
-  role       = "${aws_iam_role.default.name}"
-  policy_arn = "${aws_iam_policy.default.arn}"
+  role       = aws_iam_role.default.name
+  policy_arn = aws_iam_policy.default.arn
 }
