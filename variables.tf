@@ -11,7 +11,7 @@ variable "function_name" {
 
 variable "memory_size" {
   description = "Amount of memory in MB for lambda function"
-  default     = "512"
+  default     = 512
 }
 
 variable "runtime" {
@@ -21,14 +21,14 @@ variable "runtime" {
 
 variable "timeout" {
   description = "Time limit in seconds for lambda function"
-  default     = "10"
+  default     = 10
 }
 
 variable "splunk_cache_ttl" {
   description = "Time-to-live value for cached Splunk connection in milliseconds"
 
   # Default cache TTL is 6 minutes.
-  default = "6000"
+  default = 6000
 }
 
 variable "ssm_prefix" {
