@@ -1,6 +1,6 @@
 # cloudwatch-to-splunk
 
-[![Build Status](https://drone.techservices.illinois.edu/api/badges/techservicesillinois/terraform-aws-cloudwatch-to-splunk/status.svg)](https://drone.techservices.illinois.edu/techservicesillinois/terraform-aws-cloudwatch-to-splunk)
+[![Terraform actions status](https://github.com/techservicesillinois/terraform-aws-cloudwatch-to-splunk/workflows/terraform/badge.svg)](https://github.com/techservicesillinois/terraform-aws-cloudwatch-to-splunk/actions)
 
 Provides a lambda function that can be used with an arbitrary number of CloudWatch log groups to forward logs to [Splunk](https://www.splunk.com/). Each log group requires
 a log filter and configuration using [AWS Systems Manager
@@ -33,14 +33,15 @@ be overridden by end users.
 (default: 512).  **NOTE:** In general, this should not be overridden by
 end users.
 
-* `runtime` - Lambda function's runtime environment (default: nodejs8.10).
-**NOTE:** In general, this should not be overridden by end users.
+* `runtime` - Lambda function's runtime environment.
+**NOTE:** This *_must_* be a `nodejs` environment supported by Amazon.
+See the [AWS documentation on Lambda runtime environments](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html).
 
 * `splunk_cache_ttl` - Time-to-live value for cached Splunk connection
-in milliseconds (default: *6000*)
+in milliseconds (default: 360000 seconds, which is equal to 6 minutes).
 
 * `ssm_prefix` - Prefix string to be applied to look up runtime SSM
-variables (default: *cloudwatch_to_splunk*)
+variables (default: *cloudwatch\_to\_splunk*).
 
 Attributes Reference
 --------------------

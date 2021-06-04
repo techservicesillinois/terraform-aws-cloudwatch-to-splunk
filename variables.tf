@@ -16,7 +16,6 @@ variable "memory_size" {
 
 variable "runtime" {
   description = "Lambda function's runtime environment"
-  default     = "nodejs8.10"
 }
 
 variable "timeout" {
@@ -27,11 +26,17 @@ variable "timeout" {
 variable "splunk_cache_ttl" {
   description = "Time-to-live value for cached Splunk connection in milliseconds"
 
-  # Default cache TTL is 6 minutes.
-  default = 6000
+  # Set default cache TTL.
+  default = 6 * 60 * 1000 # 6 minutes expressed in milliseconds.
 }
 
 variable "ssm_prefix" {
-  description = "Prefix string to be applied to look up runtime SSM variables)"
+  description = "Prefix string to be applied to look up runtime SSM variables"
   default     = "/cloudwatch_to_splunk"
+}
+
+variable "tags" {
+  description = "A mapping of tags to be supplied to resources where supported"
+  type        = map(string)
+  default     = {}
 }

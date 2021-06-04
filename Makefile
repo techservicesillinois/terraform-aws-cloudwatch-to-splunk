@@ -1,6 +1,8 @@
-.PHONY: test clean docker sh shell
+.PHONY: all test clean docker sh shell
 
 REPO := $(shell basename $(shell git remote get-url origin) .git)
+
+all: test
 
 test: .terraform
 	AWS_DEFAULT_REGION=us-east-2 terraform validate
@@ -18,8 +20,8 @@ test: .terraform
 	! egrep 'output\s+"\w+"\s*\{' $(shell find . -name '*.tf' ! -name outputs.tf)
 	# Do NOT define a variable in files other than variables.tf
 	! egrep 'variable\s+"\w+"\s*\{' $(shell find . -name '*.tf' ! -name variables.tf)
-	# DO put a badge in README.md
-	grep -q "\[\!\[Build Status\]([^)]*$(REPO)/status.svg)\]([^)]*$(REPO))" README.md
+	# DO put a badge in top-level README.md
+	grep -q "\[\!\[Terraform actions status\]([^)]*$(REPO)/workflows/terraform/badge.svg)\]([^)]*$(REPO)/actions)" README.md
 	# Do NOT use ?ref= in source lines in a README.md!
 	! grep 'source\s*=.*?ref=' *.tf README.md
 	# Do NOT start a source line with git::
