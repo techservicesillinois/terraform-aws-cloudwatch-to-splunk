@@ -1,6 +1,0 @@
-pipeline:
-  build:
-    image: hashicorp/terraform
-    commands:
-      - apk add make
-      - make

@@ -21,8 +21,9 @@ resource "aws_lambda_function" "default" {
   handler     = "index.handler"
   publish     = true
   role        = aws_iam_role.default.arn
-  s3_bucket   = "drone-${local.region}-${local.account_id}"
+  s3_bucket   = format("drone-%s-%s", local.region, local.account_id)
   s3_key      = "splunk-aws-serverless-apps/splunk-cloudwatch-logs-processor.zip"
+  tags        = var.tags
 
   environment {
     variables = {
