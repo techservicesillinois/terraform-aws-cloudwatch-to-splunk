@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "default" {
       "logs:DescribeLogStreams",
     ]
 
-    resources = [aws_cloudwatch_log_group.default.arn]
+    resources = [format("%s:*", aws_cloudwatch_log_group.default.arn)]
   }
 
   statement {
@@ -26,8 +26,8 @@ data "aws_iam_policy_document" "default" {
     ]
 
     resources = [
-      aws_cloudwatch_log_group.default.arn,
-      "${aws_cloudwatch_log_group.default.arn}:*:*",
+      format("%s:*", aws_cloudwatch_log_group.default.arn),
+      format("%s:*:*:*", aws_cloudwatch_log_group.default.arn)
     ]
   }
 
