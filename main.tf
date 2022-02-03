@@ -1,10 +1,9 @@
-locals {
-  account_id = data.aws_caller_identity.current.account_id
-  region     = data.aws_region.current.name
-}
-
 resource "aws_cloudwatch_log_group" "default" {
   name = "/aws/lambda/${var.function_name}"
+}
+
+locals {
+  lambda_zip = "lambda/splunk-cloudwatch-logs-processor.zip"
 }
 
 resource "aws_lambda_function" "default" {
@@ -15,15 +14,15 @@ resource "aws_lambda_function" "default" {
   # End users will ordinarily use the default values.
   function_name = var.function_name
 
-  runtime     = var.runtime
-  memory_size = var.memory_size
-  timeout     = var.timeout
-  handler     = "index.handler"
-  publish     = true
-  role        = aws_iam_role.default.arn
-  s3_bucket   = format("drone-%s-%s", local.region, local.account_id)
-  s3_key      = "splunk-aws-serverless-apps/splunk-cloudwatch-logs-processor.zip"
-  tags        = var.tags
+  runtime          = var.runtime
+  memory_size      = var.memory_size
+  timeout          = var.timeout
+  handler          = "index.handler"
+  publish          = true
+  role             = aws_iam_role.default.arn
+  filename         = local.lambda_zip
+  source_code_hash = filebase64sha256(local.lambda_zip)
+  tags             = var.tags
 
   environment {
     variables = {
