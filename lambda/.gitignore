@@ -1,0 +1,3 @@
+#   Override any ignore of zip files.
+
+! *.zip

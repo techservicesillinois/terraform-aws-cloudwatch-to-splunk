@@ -1,7 +1,13 @@
-*.swp
+#   Ignore Terraform and Terragrunt work files anywhere in tree.
 
-terraform.tfstate
-terraform.tfstate.*
+**/.terraform*
+**/.terragrunt-cache
+**/terraform.tfstate*
 
-.terraform
-.terragrunt-cache
+#   Ignore override.tf file anywhere in tree.
+
+**/override.tf
+
+#   Ignore vim swap files anywhere in tree.
+
+**/*.sw[mnop]
