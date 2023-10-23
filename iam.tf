@@ -72,15 +72,31 @@ data "aws_iam_policy_document" "assume-role-policy" {
 resource "aws_iam_policy" "default" {
   name        = var.function_name
   path        = "/"
-  description = "Policy controlling access granted to lambda function ${var.function_name}"
+  description = "CloudWatch access for ${var.function_name} lambda"
   policy      = data.aws_iam_policy_document.default.json
+  tags        = local.tags
+
+  lifecycle {
+    ignore_changes = [
+      # Don't replace policy if description is changed.
+      description,
+    ]
+  }
 }
 
 resource "aws_iam_role" "default" {
   name               = var.function_name
   path               = "/"
-  description        = "Role assumed by lambda function ${var.function_name}"
+  description        = "Role assumed by ${var.function_name} lambda"
   assume_role_policy = data.aws_iam_policy_document.assume-role-policy.json
+  tags               = local.tags
+
+  lifecycle {
+    ignore_changes = [
+      # Don't replace role if description is changed.
+      description,
+    ]
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "default" {

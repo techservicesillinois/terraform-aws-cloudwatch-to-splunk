@@ -1,11 +1,11 @@
 ##### Variables for aws_lambda_function resource.
 
-# The function_name, runtime, memory_size, and timeout use variables
-# to facilitate testing of both new runtimes and new function versions.
-# End users will ordinarily use the default values.
+# The runtime, memory_size, and timeout are defined as examples to
+# facilitate testing and deployment new function versions and upgrades
+# to runtime versions. End users will ordinarily use the default values.
 
 variable "function_name" {
-  description = "Name of the lambda function and role to be deployed"
+  description = "Name of lambda function to be deployed"
   default     = "cloudwatch-to-splunk"
 }
 
@@ -14,13 +14,14 @@ variable "memory_size" {
   default     = 512
 }
 
-variable "runtime" {
-  description = "Lambda function's runtime environment"
+variable "retention" {
+  description = "Log retention period in days"
+  type        = number
+  default     = 30
 }
 
-variable "timeout" {
-  description = "Time limit in seconds for lambda function"
-  default     = 10
+variable "runtime" {
+  description = "Lambda function's runtime environment"
 }
 
 variable "splunk_cache_ttl" {
@@ -36,7 +37,12 @@ variable "ssm_prefix" {
 }
 
 variable "tags" {
-  description = "A mapping of tags to be supplied to resources where supported"
+  description = "Map of tags to be supplied to resources where supported"
   type        = map(string)
   default     = {}
+}
+
+variable "timeout" {
+  description = "Time limit in seconds for lambda function"
+  default     = 10
 }
